@@ -1,0 +1,53 @@
+{
+  "name": "@quox/volt",
+  "version": "0.1.0",
+  "description": "VOLT v0.1 evidence bundles: build, verify, and Ed25519-sign tamper-evident execution traces. Zero runtime dependencies.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "volt-verify": "./bin/volt-verify.mjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "conformance/schemas",
+    "README.md",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "gen-fixtures": "node scripts/gen-fixtures.mjs"
+  },
+  "keywords": [
+    "volt",
+    "evidence",
+    "audit",
+    "tamper-evident",
+    "provenance",
+    "hash-chain",
+    "ed25519",
+    "quox"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "ajv": "^8.17.1",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}

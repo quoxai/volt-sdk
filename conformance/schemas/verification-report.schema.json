@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/quoxai/volt/schemas/verification-report.schema.json",
+  "title": "VOLT Verification Report",
+  "description": "Output format for a VOLT verifier (v0.1). See SPEC.md section 18 and VERIFICATION.md section 6.",
+  "type": "object",
+  "required": ["result"],
+  "oneOf": [
+    {
+      "properties": {
+        "result": {
+          "const": "PASS"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "bundle_id": {
+          "type": "string"
+        },
+        "volt_version": {
+          "type": "string"
+        },
+        "hash_alg": {
+          "type": "string"
+        },
+        "event_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "first_event_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "last_event_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "attachments_verified": {
+          "type": "boolean"
+        },
+        "signatures_verified": {
+          "type": "boolean"
+        },
+        "signature_trust": {
+          "type": "string",
+          "enum": ["pinned", "embedded", "none"],
+          "description": "Provenance of the verifying key: pinned (identity-verified), embedded (self-consistent only), or none."
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["result"]
+    },
+    {
+      "properties": {
+        "result": {
+          "const": "FAIL"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Standard failure reason code",
+          "enum": [
+            "MANIFEST_MISSING",
+            "MANIFEST_UNREADABLE",
+            "MANIFEST_SCHEMA_INVALID",
+            "EVENTS_FILE_MISSING",
+            "INVALID_EVENT_JSON",
+            "EVENT_SCHEMA_INVALID",
+            "VERSION_MISMATCH",
+            "RUN_ID_MISMATCH",
+            "SEQ_NOT_MONOTONIC",
+            "SEQ_DUPLICATE",
+            "SEQ_GAP",
+            "EVENT_HASH_MISMATCH",
+            "INVALID_GENESIS_PREV_HASH",
+            "CHAIN_BROKEN",
+            "MANIFEST_MISMATCH",
+            "ATTACHMENT_MISSING",
+            "ATTACHMENT_HASH_MISMATCH",
+            "SIGNATURE_SCHEMA_INVALID",
+            "SIGNATURE_INVALID",
+            "UNSUPPORTED_SIGNATURE_TYPE"
+          ]
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": ["result", "reason"]
+    },
+    {
+      "properties": {
+        "result": {
+          "const": "ERROR"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": ["result", "reason"]
+    }
+  ]
+}

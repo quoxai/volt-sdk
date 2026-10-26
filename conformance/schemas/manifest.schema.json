@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/quoxai/volt/schemas/manifest.schema.json",
+  "title": "VOLT Evidence Bundle Manifest",
+  "description": "The manifest.json for a VOLT Evidence Bundle (v0.1). See SPEC.md sections 10 and 16.",
+  "type": "object",
+  "required": [
+    "volt_version",
+    "bundle_id",
+    "run_id",
+    "created_ts",
+    "hash_alg",
+    "events_file",
+    "event_count",
+    "first_event_hash",
+    "last_event_hash"
+  ],
+  "properties": {
+    "volt_version": {
+      "type": "string",
+      "description": "Protocol version, must match event volt_version",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "bundle_id": {
+      "type": "string",
+      "description": "Unique identifier for this bundle (UUID or ULID)",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Run identifier, must match all events in the bundle",
+      "minLength": 1
+    },
+    "created_ts": {
+      "type": "string",
+      "description": "ISO 8601 timestamp with UTC Z suffix",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    },
+    "hash_alg": {
+      "type": "string",
+      "description": "Hash algorithm used for events and attachments",
+      "const": "sha256"
+    },
+    "events_file": {
+      "type": "string",
+      "description": "Filename of the NDJSON events file, typically \"events.ndjson\"",
+      "minLength": 1
+    },
+    "event_count": {
+      "type": "integer",
+      "description": "Total number of events in the events file",
+      "minimum": 1
+    },
+    "first_event_hash": {
+      "type": "string",
+      "description": "Hash of the first event (seq=1)",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "last_event_hash": {
+      "type": "string",
+      "description": "Hash of the last event (seq=max)",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bundle_mode": {
+      "type": "string",
+      "description": "Whether this is a rolling snapshot or final bundle",
+      "enum": ["rolling", "final"]
+    },
+    "cutoff_ts": {
+      "type": "string",
+      "description": "For rolling bundles, the cutoff timestamp (ISO 8601 UTC)",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "AEE correlation ID for this run"
+    },
+    "producer": {
+      "type": "object",
+      "description": "Information about the system that produced this bundle",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "build": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "integrations": {
+      "type": "object",
+      "description": "Summary IDs for AEE/AOCL integration references",
+      "properties": {
+        "aee": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "aocl": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "redactions_present": {
+      "type": "boolean",
+      "description": "Whether any events in this bundle contain redacted fields"
+    },
+    "attachments_present": {
+      "type": "boolean",
+      "description": "Whether any attachments are included in this bundle"
+    },
+    "attachments": {
+      "type": "array",
+      "description": "Summary of attachments included in the bundle",
+      "items": {
+        "type": "object",
+        "required": ["hash_alg", "hash", "content_type", "path"],
+        "properties": {
+          "hash_alg": {
+            "type": "string",
+            "const": "sha256"
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "content_type": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "description": "Optional signature records (see SPEC.md section 15)",
+      "items": {
+        "$ref": "signature.schema.json"
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional human-readable notes about this bundle"
+    }
+  },
+  "additionalProperties": true
+}

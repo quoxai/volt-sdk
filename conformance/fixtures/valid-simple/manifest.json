@@ -1,0 +1,19 @@
+{
+  "volt_version": "0.1",
+  "bundle_id": "BUNDLE-EXAMPLE-1",
+  "run_id": "RUN-EXAMPLE-1",
+  "created_ts": "2026-02-28T19:00:01.000Z",
+  "hash_alg": "sha256",
+  "events_file": "events.ndjson",
+  "event_count": 8,
+  "first_event_hash": "d45aa3b3367103a2553aa6119b41eacbcbd3ce893bf9f74ba6a64dd8f4a77c39",
+  "last_event_hash": "98d92f2d51695789a228863855a458b2ecf5dd0e3f59d000bca0c4e7ca330f60",
+  "bundle_mode": "final",
+  "correlation_id": "corr-001",
+  "producer": {
+    "name": "volt-sdk-fixtures",
+    "version": "0.1.0"
+  },
+  "redactions_present": true,
+  "attachments_present": true
+}
